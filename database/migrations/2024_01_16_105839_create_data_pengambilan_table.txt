@@ -1,0 +1,31 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+class CreateDataPengambilanTable extends Migration
+{
+    public function up()
+    {
+        Schema::create('data_pengambilan', function (Blueprint $table) {
+            $table->id(); // Menambahkan kolom id yang auto-increment
+            $table->string('no_order');
+            $table->string('nama_pelanggan');
+            $table->integer('berat_per_kg');
+            $table->date('diambil');
+            $table->enum('status', ['OnProcess', 'Ready', 'Completed']);
+            $table->timestamps();
+
+            $table->foreign('no_order')->references('no_order')->on('data_order');
+            $table->foreign('nama_pelanggan')->references('nama_pelanggan')->on('data_order');
+            $table->foreign('berat_per_kg')->references('berat_per_kg')->on('data_order');
+            $table->foreign('status')->references('status')->on('data_order');
+        });
+    }
+
+    public function down()
+    {
+        Schema::dropIfExists('data_pengambilan');
+    }
+}
